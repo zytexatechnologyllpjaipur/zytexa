@@ -1,11 +1,12 @@
 import { useId, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Icon from './Icon.jsx';
 import Reveal from './Reveal.jsx';
 import { FAQS } from '../data/services.js';
 import { SERVICES } from '../data/services.js';
 import { SITE, BUDGETS } from '../data/site.js';
 
-export function FaqSection() {
+export function FaqSection({ items = FAQS }) {
   const [open, setOpen] = useState(0);
   const base = useId();
   return (
@@ -17,7 +18,7 @@ export function FaqSection() {
           <p className="muted">Quick answers about our services, how we work and how to get started.</p>
         </Reveal>
         <Reveal as="ul" className="faq" delay={80}>
-          {FAQS.map((f, k) => {
+          {items.map((f, k) => {
             const on = open === k;
             return (
               <li key={f.q} className={`faq__item ${on ? 'is-open' : ''}`}>
@@ -174,7 +175,7 @@ export function ContactSection() {
               </Field>
               <div className={`check ${err.agree ? 'has-err' : ''}`}>
                 <input id="agree" type="checkbox" checked={v.agree} onChange={set('agree')} {...aria('agree')} />
-                <label htmlFor="agree">I agree to the <a href="#contact">Privacy Policy</a></label>
+                <label htmlFor="agree">I agree to the <Link to="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</Link></label>
                 {err.agree && <small id="agree-e" role="alert">{err.agree}</small>}
               </div>
               <button className="btn btn--block cx__submit" disabled={status.kind === 'sending'}>Request a Consultation <Icon name="arrow" size={16} /></button>

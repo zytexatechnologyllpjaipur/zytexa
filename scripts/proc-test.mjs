@@ -1,0 +1,20 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const R = {};
+const p = await b.newPage({ viewport: { width: 1440, height: 900 } }); const errs = [];
+p.on('pageerror', e => errs.push(e.message)); p.on('console', m => m.type() === 'error' && errs.push(m.text()));
+await p.goto('http://localhost:5173/', { waitUntil: 'networkidle' });
+await p.evaluate(() => document.querySelector('#process').scrollIntoView({ block: 'center' }));
+await p.mouse.move(5, 5);
+const seq = [];
+for (let k = 0; k < 8; k++) { seq.push(await p.evaluate(() => { const a = document.querySelector('.step.is-active'); const m = document.querySelector('.timeline__marker').getBoundingClientRect(); const d = a.querySelector('.step__dot').getBoundingClientRect(); return `${a.querySelector('h3').innerText} markerX=${Math.round(m.left + m.width / 2)} dotX=${Math.round(d.left + d.width / 2)}`; })); await p.waitForTimeout(2700); }
+R.seq = seq;
+R.circleGone = await p.locator('.proc').count();
+await p.mouse.move(700, 500); await p.locator('.timeline').hover(); const h1 = await p.locator('.step.is-active h3').innerText(); await p.waitForTimeout(3000); R.pausedOnHover = h1 === await p.locator('.step.is-active h3').innerText();
+await p.waitForTimeout(100);
+const g = await p.evaluate(() => [...document.querySelectorAll('.globe__label-txt')].map(e => e.innerText));
+R.heroLabels = g;
+R.sw = await p.evaluate(() => [document.documentElement.scrollWidth, innerWidth]); R.errs = errs;
+const q = await (await b.newContext({ reducedMotion: 'reduce', viewport: { width: 1280, height: 900 } })).newPage();
+await q.goto('http://localhost:5173/', { waitUntil: 'networkidle' }); await q.evaluate(() => document.querySelector('#process').scrollIntoView({ block: 'center' })); await q.waitForTimeout(3500);
+R.reduced = await q.evaluate(() => ({ active: document.querySelectorAll('.step.is-active').length, marker: getComputedStyle(document.querySelector('.timeline__marker')).display, dimmed: getComputedStyle(document.querySelectorAll('.step')[1]).opacity }));
+console.log(JSON.stringify(R, null, 1)); await b.close();

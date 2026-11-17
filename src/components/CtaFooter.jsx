@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import Icon from './Icon.jsx';
 import Reveal from './Reveal.jsx';
 import { LOGO, SITE } from '../data/site.js';
@@ -20,42 +21,61 @@ export function Cta() {
   );
 }
 
+const QUICK = [['Home', '/'], ['Services', '/services'], ['Industries', '/industries'], ['How We Work', '/how-we-work'], ['About Us', '/about'], ['Contact', '/contact']];
+const FOOT_SERVICES = [['Website Development', 'website-development'], ['Mobile App Development', 'mobile-app-development'], ['Digital Marketing', 'digital-marketing'], ['E-Commerce Solutions', 'e-commerce-solutions'], ['CRM & ERP Solutions', 'crm-erp-solutions']];
+const COMPANY = [['Portfolio', '/portfolio'], ['Careers', '/careers'], ['FAQ', '/faq'], ['Privacy Policy', '/privacy-policy'], ['Terms & Conditions', '/terms-and-conditions'], ['Refund Policy', '/refund-policy']];
+
 export function Footer() {
+  const socials = SITE.social.filter((x) => x.href); // only verified profile URLs are rendered
   return (
     <footer className="footer">
       <div className="container footer__grid">
         <div className="footer__brand">
-          <img src={LOGO} alt="Zytexa Technology LLP" width="140" height="74" />
-          <p>We build digital solutions, powerful marketing strategies and intelligent automation to help your business grow.</p>
+          <Link to="/" aria-label="ZYTEXA Technology LLP — home"><img src={LOGO} alt="ZYTEXA Technology LLP" width="140" height="74" /></Link>
+          <p>We build digital solutions, powerful marketing strategies and intelligent automation to help your business grow. 14 services, one team, based in Jaipur.</p>
+          <p className="footer__tag">Build · Grow · Automate</p>
+          {socials.length > 0 && (
+            <ul className="footer__social" aria-label="Social media">
+              {socials.map((x) => <li key={x.name}><a href={x.href} target="_blank" rel="noopener noreferrer">{x.name}</a></li>)}
+            </ul>
+          )}
         </div>
+        <nav aria-label="Quick links">
+          <h4>Quick Links</h4>
+          <ul>{QUICK.map(([l, to]) => <li key={l}><Link to={to}>{l}</Link></li>)}</ul>
+        </nav>
         <nav aria-label="Our services">
           <h4>Our Services</h4>
           <ul>
-            <li><a href="#services">Website Development</a></li><li><a href="#services">Mobile App Development</a></li>
-            <li><a href="#services">Digital Marketing</a></li><li><a href="#services">E-Commerce Solutions</a></li>
-            <li><a href="#services" className="strong">View All Services →</a></li>
+            {FOOT_SERVICES.map(([l, slug]) => <li key={slug}><Link to={`/services/${slug}`}>{l}</Link></li>)}
+            <li><Link to="/services" className="strong">View all 14 services →</Link></li>
           </ul>
         </nav>
-        <nav aria-label="Quick links">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="#home">Home</a></li><li><a href="#services">Services</a></li><li><a href="#industries">Industries</a></li>
-            <li><a href="#process">How We Work</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li>
-          </ul>
+        <nav aria-label="Company">
+          <h4>Company</h4>
+          <ul>{COMPANY.map(([l, to]) => <li key={l}><Link to={to}>{l}</Link></li>)}</ul>
         </nav>
-        <div>
-          <h4>Contact Us</h4>
-          <ul className="footer__contact">
-            {SITE.phones.map((p) => <li key={p}><Icon name="phone" size={14} /><a href={`tel:${p.replace(/\s/g, '')}`}>{p}</a></li>)}
-            <li><Icon name="mail" size={14} /><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
-            <li className="addr"><Icon name="pin" size={14} /><span><b>Registered Office Address</b>{SITE.registeredAddress}</span></li>
-            <li className="addr"><Icon name="pin" size={14} /><span><b>Office Address</b>{SITE.address}</span></li>
-          </ul>
+        <div className="footer__connect">
+          <h4>Connect With Us</h4>
+          <dl>
+            <dt>Call</dt>
+            <dd>{SITE.phones.map((ph) => <a key={ph} href={`tel:${ph.replace(/\s/g, '')}`}>{ph}</a>)}</dd>
+            <dt>Email</dt>
+            <dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd>
+            <dt>Office</dt>
+            <dd>{SITE.address}<a className="strong" href={SITE.mapsUrl} target="_blank" rel="noopener noreferrer">View on map →</a></dd>
+            <dt>Registered Office</dt>
+            <dd>{SITE.registeredAddress}</dd>
+          </dl>
         </div>
-        <div className="footer__legal">
-          <p><a href="#contact">Privacy Policy</a><span aria-hidden="true">|</span><a href="#contact">Terms &amp; Conditions</a></p>
-          <small>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</small>
-        </div>
+      </div>
+      <div className="container footer__bar">
+        <small>© {new Date().getFullYear()} Zytexa Technology LLP. All rights reserved.</small>
+        <ul aria-label="Legal">
+          <li><Link to="/privacy-policy">Privacy</Link></li>
+          <li><Link to="/terms-and-conditions">Terms</Link></li>
+          <li><Link to="/sitemap">Sitemap</Link></li>
+        </ul>
       </div>
     </footer>
   );

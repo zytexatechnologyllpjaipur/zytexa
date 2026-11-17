@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 900 } });
+const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => m.type()==='error' && errs.push(m.text()));
+await p.goto('http://localhost:5173/', { waitUntil: 'networkidle' });
+const r = {};
+await p.click('.nav__item--mega .nav__chev'); r.dropdown = await p.locator('.menu.is-open').count();
+await p.keyboard.press('Escape'); r.dropdownClosedByEsc = await p.locator('.menu.is-open').count();
+await p.locator('.faq__item button').nth(2).click(); r.faqOpen = await p.locator('.faq__item.is-open').count(); r.faqExpanded = await p.locator('.faq__item button').nth(2).getAttribute('aria-expanded');
+await p.locator('form button.btn').click(); r.errorsShown = await p.locator('.field.has-err').count();
+await p.fill('#name','Test User'); await p.fill('#phone','+91 98765 43210'); await p.fill('#email','a@b.co'); await p.selectOption('#service',{index:1}); await p.fill('#message','Need a website and CRM setup.'); await p.check('#agree');
+await p.locator('form button.btn').click(); r.status = await p.locator('.form__status').innerText();
+await p.click('a.btn--ghost'); await p.waitForTimeout(900); r.anchorScrolled = (await p.evaluate(() => scrollY)) > 300;
+console.log(JSON.stringify(r,null,1), 'errors:', errs); await b.close();

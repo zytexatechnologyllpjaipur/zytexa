@@ -17,7 +17,14 @@ export const SITE = {
   hours: '',
   // NOT VERIFIED: no social profile links are published on zytexa.com. Add { name: 'LinkedIn', href: 'https://...' } entries when they exist.
   // Supported names: LinkedIn, Instagram, Facebook, X, YouTube. With no entries, the panel shows an email button only.
-  social: [],
+  // Footer + contact social links. Entries WITHOUT an href are not rendered. Add verified profile URLs here (names: Instagram, LinkedIn, Facebook, YouTube, WhatsApp).
+  social: [
+    { name: 'Instagram', href: '' },
+    { name: 'LinkedIn', href: '' },
+    { name: 'Facebook', href: '' },
+    { name: 'YouTube', href: '' },
+    { name: 'WhatsApp', href: '' },
+  ],
 };
 
 // Optional budget bands for the "Budget" select. Left empty on purpose: with no bands the field is a free-text input.

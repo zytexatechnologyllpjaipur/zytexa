@@ -97,7 +97,7 @@ export function ContactSection() {
     }
     setStatus({ kind: 'sending', msg: 'Sending…' });
     try {
-      const res = await fetch(SITE.contactEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(v) });
+      const res = await fetch(SITE.contactEndpoint, { method: 'POST', body: JSON.stringify(v) });
       if (!res.ok) throw new Error(String(res.status));
       setStatus({ kind: 'ok', msg: 'Thank you! Your enquiry has been sent. We will get back to you shortly.' });
       setV(EMPTY);

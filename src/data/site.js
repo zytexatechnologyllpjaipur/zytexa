@@ -10,7 +10,7 @@ export const SITE = {
   // Second address as published on zytexa.com (unlabelled there); provided by the owner as the Registered Office.
   registeredAddress: '18B, Deewan Colony, Bas Badanpura, Gangapol, Tripolia Bazar, Jaipur, Rajasthan, 302002',
   mapsUrl: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('293A Kamla Tower Dhawas Road Heerapura Vaishali Nagar Jaipur 302021'),
-  contactEndpoint: import.meta.env.VITE_CONTACT_ENDPOINT || '',
+  contactEndpoint: import.meta.env.VITE_CONTACT_ENDPOINT || 'https://script.google.com/macros/s/AKfycbzK3-VxQpR-5Vu6LqXFVr6jOs9wJ5g9ltb4RZMs02uOgq6Mw4f48WlyMrItGn-FFPhh/exec',
 
   tagline: 'Jaipur-based IT and digital solutions company.', // wording already used on this site
   // NOT VERIFIED: no business hours are published on zytexa.com. Leave empty to hide the row, or set e.g. 'Mon-Sat, 10:00 AM - 7:00 PM IST' once confirmed.
